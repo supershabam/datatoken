@@ -1,7 +1,7 @@
 datatoken
 =========
 
-[http://godoc.org/github.com/supershabam/datatoken](http://godoc.org/github.com/supershabam/datatoken)
+[![GoDoc](https://godoc.org/github.com/supershabam/datatoken?status.svg)](https://godoc.org/github.com/supershabam/datatoken)
 
 A datatoken is a signed piece of data readable by the client and server, but cannot
 be modified without invalidating the token. It's like a signed cookie. This is just
