@@ -9,8 +9,10 @@ import (
 	"strings"
 )
 
+// ErrMalformedToken is returned if the token cannot be decoded
 var ErrMalformedToken = errors.New("malformed token")
 
+// Base64 is a Tokenizer that uses base64 encoding to create the token
 type Base64 struct {
 	Encoding *base64.Encoding
 	Hash     func() hash.Hash

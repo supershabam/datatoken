@@ -1,4 +1,4 @@
-// Datatoken is an interface for creating signed tokens that can be verified by
+// Package datatoken is an interface for creating signed tokens that can be verified by
 // the keyholder, but the payload is parsable and readable by non-key holding
 // consumers of the token.
 //
@@ -18,4 +18,6 @@ type Tokenizer interface {
 	DetokenizeUnverified([]byte) ([]byte, error)
 }
 
+// ErrInvalidSignature is returned if the token being detokenized has a bad
+// signature
 var ErrInvalidSignature = errors.New("invalid signature")
