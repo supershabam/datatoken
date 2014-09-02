@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -65,5 +66,42 @@ func TestBase64(t *testing.T) {
 	}
 	if !bytes.Equal(m, message) {
 		t.Errorf("expected m to be %s not %s", message, m)
+	}
+}
+
+func ExampleBase64() {
+	message := []byte(`{"arbitrary":"message"}`)
+
+	// serverTokenizer knows the hash and key functions
+	serverTokenizer := Base64{
+		Encoding: base64.URLEncoding,
+		Hash:     sha256.New,
+		Key:      []byte("sekret"),
+	}
+
+	token, err := serverTokenizer.Tokenize(message)
+	if err != nil {
+		panic(err)
+	}
+
+	// send token to client, which can read the payload
+	clientTokenizer := Base64{
+		Encoding: base64.URLEncoding,
+	}
+	parsedMessage, err := clientTokenizer.DetokenizeUnverified(token)
+	if err != nil {
+		panic(err)
+	}
+	if !bytes.Equal(parsedMessage, message) {
+		panic(fmt.Errorf("parsedMessage doesn't equal original message"))
+	}
+
+	// serverTokenizer can read token and verify that signature is valid
+	parsedMessage, err := serverTokenizer.Detokenize(token)
+	if err != nil {
+		panic(err)
+	}
+	if !bytes.Equal(parsedMessage, message) {
+		panic(fmt.Errorf("parsedMessage doesn't equal original message"))
 	}
 }
